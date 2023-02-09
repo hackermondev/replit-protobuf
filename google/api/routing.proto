@@ -1,0 +1,13 @@
+package google.api;
+
+import "google/protobuf/descriptor.proto";
+
+message RoutingRule {
+ repeated RoutingParameter routing_parameters = 2;
+}
+
+message RoutingParameter {
+ optional string field = 1;
+ optional string path_template = 2;
+}
+

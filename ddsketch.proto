@@ -1,0 +1,33 @@
+package ;
+
+message DDSketch {
+ optional IndexMapping mapping = 1;
+ optional Store positiveValues = 2;
+ optional Store negativeValues = 3;
+ optional double zeroCount = 4;
+}
+
+message IndexMapping {
+
+ enum Interpolation {
+  NONE = 0;
+  LINEAR = 1;
+  QUADRATIC = 2;
+  CUBIC = 3;
+ }
+ optional double gamma = 1;
+ optional double indexOffset = 2;
+ optional IndexMapping.Interpolation interpolation = 3;
+}
+
+message Store {
+ message BinCountsEntry {
+  optional sint32 key = 1;
+  optional double value = 2;
+ }
+
+ repeated Store.BinCountsEntry binCounts = 1;
+ repeated double contiguousBinCounts = 2;
+ optional sint32 contiguousBinIndexOffset = 3;
+}
+

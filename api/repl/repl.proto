@@ -1,0 +1,58 @@
+package replit.goval.api.repl;
+
+import "api/features/features.proto";
+
+
+enum Persistence {
+ PERSISTENT = 0;
+ EPHEMERAL = 1;
+ NONE = 2;
+ READ_ONLY = 3;
+}
+message Buckets {
+ optional string snapshots = 1;
+ optional string metadata = 2;
+}
+
+message Repl {
+ optional string id = 1;
+ optional string language = 2;
+ optional string bucket = 3;
+ optional string slug = 4;
+ optional string user = 5;
+ optional string sourceRepl = 6;
+ optional string database = 7;
+ optional Buckets buckets = 8;
+}
+
+message ResourceLimits {
+
+ enum Cachability {
+  NONE = 0;
+  USER = 1;
+  REPL = 2;
+ }
+ optional bool net = 1;
+ optional int64 memory = 2;
+ optional double threads = 3;
+ optional double shares = 4;
+ optional int64 disk = 5;
+ optional Cachability cache = 6;
+ optional bool restrictNetwork = 7;
+ optional bool preventWakeup = 8;
+}
+
+message Permissions {
+ optional bool toggleAlwaysOn = 1;
+}
+
+message Metadata {
+ optional Repl repl = 7;
+ optional ResourceLimits resourceLimits = 10;
+ optional ResourceLimits interactiveResourceLimits = 17;
+ optional Persistence persistence = 6;
+ repeated string flags = 14;
+ optional Permissions permissions = 15;
+ repeated features.Feature features = 16;
+}
+

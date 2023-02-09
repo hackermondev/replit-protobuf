@@ -1,0 +1,20 @@
+package replit.goval.api;
+
+message GetInstanceIDRequest {
+}
+
+message GetInstanceIDResponse {
+ optional string id = 1;
+}
+
+message ListLanguagesRequest {
+}
+
+message ListLanguagesResponse {
+ repeated Language languages = 1;
+}
+
+message Language {
+ optional string Name = 1;
+}
+

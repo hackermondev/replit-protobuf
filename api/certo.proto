@@ -1,0 +1,16 @@
+package replit.goval.api;
+
+message ClientHelloInfo {
+ repeated uint32 signatureSchemes = 4;
+ optional string serverName = 7;
+}
+
+message GetOrCreateCertRequest {
+ optional ClientHelloInfo info = 1;
+ optional string proxyHost = 2;
+}
+
+message GetOrCreateCertResponse {
+ optional bytes cert = 1;
+}
+

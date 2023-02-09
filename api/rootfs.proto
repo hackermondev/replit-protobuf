@@ -1,0 +1,46 @@
+package replit.goval.api;
+
+message OverlayMount {
+ optional string name = 1;
+ repeated string lowerdir = 2;
+ optional string mountpoint = 3;
+ optional bool volatile = 4;
+ optional bool read_only = 5;
+}
+
+message EmptyMount {
+ optional string name = 1;
+ optional string mountpoint = 2;
+}
+
+message MoveMount {
+ optional string name = 1;
+ optional string mountpoint = 2;
+ optional bool read_only = 5;
+}
+
+message BindMount {
+ optional string source = 1;
+ optional string mountpoint = 2;
+ optional bool read_only = 5;
+}
+
+message Mount {
+ optional OverlayMount overlay = 1;
+ optional EmptyMount empty = 2;
+ optional MoveMount move = 3;
+ optional BindMount bind = 4;
+}
+
+message PreservedMountpoint {
+ optional string mountpoint = 1;
+ optional bool read_only = 2;
+}
+
+message RootFS {
+ optional int32 pid = 1;
+ optional uint32 uid = 2;
+ repeated Mount mounts = 4;
+ repeated PreservedMountpoint preservedMountpoints = 5;
+}
+

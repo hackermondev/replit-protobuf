@@ -1,0 +1,58 @@
+package replit.goval.api;
+
+import "google/protobuf/timestamp.proto";
+import "api/client.proto";
+
+
+enum TokenVersion {
+ BARE_REPL_TOKEN = 0;
+ TYPE_AWARE_TOKEN = 1;
+}
+
+enum FlagClaim {
+ MINT_GOVAL_TOKEN = 0;
+ SIGN_INTERMEDIATE_CERT = 1;
+ IDENTITY = 5;
+ GHOSTWRITER = 6;
+ ANY_REPLID = 2;
+ ANY_USER = 3;
+ ANY_CLUSTER = 4;
+}
+message GovalSigningAuthority {
+ optional string key_id = 1;
+ optional string signed_cert = 2;
+ optional TokenVersion version = 3;
+ optional string issuer = 4;
+}
+
+message CertificateClaim {
+ optional string replid = 1;
+ optional string user = 2;
+ optional string cluster = 4;
+ optional FlagClaim flag = 3;
+}
+
+message GovalCert {
+ optional google.protobuf.Timestamp iat = 1;
+ optional google.protobuf.Timestamp exp = 2;
+ repeated CertificateClaim claims = 3;
+ optional string publicKey = 4;
+}
+
+message GovalToken {
+ optional google.protobuf.Timestamp iat = 1;
+ optional google.protobuf.Timestamp exp = 2;
+ optional string replid = 3;
+ optional ReplToken repl_token = 4;
+ optional GovalReplIdentity repl_identity = 5;
+}
+
+message GovalReplIdentity {
+ optional string replid = 1;
+ optional string user = 2;
+ optional string slug = 3;
+ optional string aud = 4;
+ optional bool ephemeral = 5;
+ optional string originReplid = 6;
+}
+

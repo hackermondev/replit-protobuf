@@ -1,0 +1,7 @@
+package google.protobuf;
+
+message Timestamp {
+ optional int64 seconds = 1;
+ optional int32 nanos = 2;
+}
+

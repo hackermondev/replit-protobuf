@@ -1,0 +1,5 @@
+package google.api;
+
+import "google/api/http.proto";
+import "google/protobuf/descriptor.proto";
+

@@ -1,0 +1,10 @@
+package google.rpc;
+
+import "google/protobuf/any.proto";
+
+message Status {
+ optional int32 code = 1;
+ optional string message = 2;
+ repeated protobuf.Any details = 3;
+}
+

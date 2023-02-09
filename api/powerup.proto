@@ -1,0 +1,31 @@
+package replit.goval.api;
+
+import "google/protobuf/timestamp.proto";
+import "api/repl/repl.proto";
+import "api/features/features.proto";
+
+message PrivateReplsPowerup {
+ optional bool enabled = 1;
+}
+
+message GhostwriterPowerup {
+ optional bool enabled = 1;
+}
+
+message ConnectivityPowerup {
+ optional bool enabled = 1;
+}
+
+message PowerUp {
+ optional google.protobuf.Timestamp expires_at = 1;
+ optional PrivateReplsPowerup private = 10;
+ optional GhostwriterPowerup ghostwriter = 11;
+ optional ConnectivityPowerup connectivity = 12;
+}
+
+message UserPowerUps {
+ optional uint32 user_id = 1;
+ optional string username = 2;
+ repeated PowerUp powerups = 3;
+}
+

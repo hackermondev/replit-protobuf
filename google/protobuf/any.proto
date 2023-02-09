@@ -1,0 +1,7 @@
+package google.protobuf;
+
+message Any {
+ optional string type_url = 1;
+ optional bytes value = 2;
+}
+

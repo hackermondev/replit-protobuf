@@ -1,0 +1,63 @@
+package replit.goval.api;
+
+import "google/protobuf/field_mask.proto";
+import "api/repl/repl.proto";
+
+message LoreCommand {
+ optional ClusterTransfer cluster_transfer = 1;
+ optional SoftTakedown soft_takedown = 2;
+ optional GovalCommand goval_command = 3;
+ optional MultiGovalCommand multi_goval_command = 5;
+ optional Restore restore = 4;
+}
+
+message ClusterTransfer {
+ optional string repl_id = 1;
+ optional string user = 2;
+ optional string new_cluster_id = 3;
+ optional string new_continent_id = 5;
+ optional string transfer_id = 4;
+}
+
+message SoftTakedown {
+ optional string repl_id = 1;
+ optional string soft_takedown_id = 2;
+}
+
+message GovalCommand {
+ optional repl.Metadata update_metadata = 1;
+ optional PartialUpdateMetadata partial_update_metadata = 2;
+ optional KillRepl kill_repl = 3;
+ optional UpdateSourceRepl update_source_repl = 4;
+ optional UpdateReplFlags update_repl_flags = 5;
+}
+
+message PartialUpdateMetadata {
+ optional google.protobuf.FieldMask field_mask = 1;
+ optional repl.Metadata update_metadata = 2;
+}
+
+message MultiGovalCommand {
+ optional string repl_id = 1;
+ repeated GovalCommand goval_commands = 2;
+}
+
+message KillRepl {
+ optional string repl_id = 1;
+}
+
+message Restore {
+ optional string repl_id = 1;
+ optional string restore_repl_id = 2;
+}
+
+message UpdateSourceRepl {
+ optional string repl_id = 1;
+ optional string source_repl_id = 2;
+}
+
+message UpdateReplFlags {
+ optional string repl_id = 1;
+ repeated string flags = 2;
+}
+

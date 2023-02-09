@@ -1,0 +1,14 @@
+package replit.goval.api.features;
+
+message Gpu {
+}
+
+message Boosted {
+}
+
+message Feature {
+ optional Gpu gpu = 1;
+ optional Boosted boosted = 2;
+ optional bool required = 3;
+}
+

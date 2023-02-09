@@ -1,0 +1,494 @@
+package replit.goval.api.controlplane;
+
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "api/controlplane/instance.proto";
+import "api/controlplane/repl.proto";
+import "api/features/features.proto";
+import "api/repl/repl.proto";
+
+
+enum ReplMetadataFieldsFlags {
+ NONE = 0;
+ ID = 1;
+ META = 2;
+ SERVER = 4;
+ DOMAINS = 8;
+ SERVER_TIME = 16;
+ METADATA_TIME = 32;
+ INTERACTIVE_TIME = 64;
+ EPHEMERAL = 128;
+ BACKOFF = 256;
+ ALWAYS_ON = 512;
+ RESTRICT_NETWORK = 1024;
+ PREVENT_WAKEUP = 2048;
+}
+
+enum EgressTimeWindow {
+ DAILY = 0;
+}
+
+enum CPUTimeWindow {
+ CPU_HOURLY = 0;
+ CPU_DAILY = 1;
+}
+
+enum AbuseAction {
+ TAKEDOWN = 0;
+ WARN = 1;
+}
+message SetInstanceStateRequest {
+ optional VMInstance vm_instance = 1;
+}
+
+message SetInstanceStateResponse {
+}
+
+message GetInstanceStateRequest {
+ optional string instance_id = 1;
+}
+
+message GetInstanceStateResponse {
+ optional VMInstance vm_instance = 1;
+}
+
+message GetManyInstanceStatesRequest {
+ repeated string instance_ids = 1;
+}
+
+message GetManyInstanceStatesResponse {
+ repeated VMInstance vm_instances = 1;
+}
+
+message PublishReplRequest {
+ optional Repl repl = 1;
+ optional ReplContainer container = 2;
+ optional bool set_ephemeral = 3;
+ optional bool ephemeral = 4;
+ optional bool restrict_network = 5;
+ optional bool prevent_wakeup = 6;
+}
+
+message PublishReplResponse {
+}
+
+message UnpublishReplRequest {
+ optional Repl repl = 1;
+ optional ReplContainer container = 2;
+ optional bool destroy = 3;
+}
+
+message UnpublishReplResponse {
+}
+
+message PublishDomainRequest {
+ optional string repl_id = 1;
+ optional string domain = 2;
+}
+
+message PublishDomainResponse {
+}
+
+message UnpublishDomainRequest {
+ optional string domain = 1;
+}
+
+message UnpublishDomainResponse {
+}
+
+message ReplLifetimeRequest {
+ optional string repl_id = 1;
+ optional string container_id = 2;
+}
+
+message ReplLifetimeResponse {
+}
+
+message UserSlug {
+ optional string user = 1;
+ optional string slug = 2;
+}
+
+message GetReplMetadataRequest {
+ optional string repl_id = 1;
+ optional UserSlug user_slug = 2;
+ optional string custom_domain_name = 3;
+ optional uint32 field_flags = 4;
+}
+
+message GetReplMetadataResponse {
+ optional ReplInfo metadata = 1;
+}
+
+message GetManyReplMetadataRequest {
+ message Identifier {
+  optional string repl_id = 1;
+ }
+
+ repeated Identifier identifiers = 1;
+ optional uint32 field_flags = 4;
+}
+
+message GetManyReplMetadataResponse {
+ repeated ReplInfo metadata = 1;
+}
+
+message GetReplRequest {
+ optional string repl_id = 1;
+ optional UserSlug user_slug = 2;
+}
+
+message GetReplResponse {
+ optional Repl repl = 1;
+}
+
+message PublishPortRequest {
+ optional string repl_id = 1;
+ optional string url = 2;
+ optional google.protobuf.Timestamp time = 3;
+ optional string container_name = 4;
+ optional uint32 conman_port = 5;
+ optional uint32 external_port = 6;
+}
+
+message PublishPortResponse {
+}
+
+message UnpublishPortRequest {
+ optional string repl_id = 1;
+ optional string url = 2;
+ optional string container_name = 3;
+ optional uint32 conman_port = 4;
+ optional uint32 external_port = 5;
+}
+
+message UnpublishPortResponse {
+ optional bool unpublished_port = 1;
+}
+
+message AddTombstoneRequest {
+ optional string repl_id = 1;
+ optional ClusterMetadata tombstone = 2;
+ optional uint64 ttl = 3;
+}
+
+message AddTombstoneResponse {
+}
+
+message RemoveTombstoneRequest {
+ optional string repl_id = 1;
+}
+
+message RemoveTombstoneResponse {
+ optional string repl_id = 1;
+}
+
+message RemoveReplRequest {
+ optional string repl_id = 1;
+}
+
+message RemoveReplResponse {
+}
+
+message PublishReplRouteRequest {
+ optional Repl repl = 1;
+ optional google.protobuf.Timestamp expires_at = 2;
+}
+
+message PublishReplRouteResponse {
+}
+
+message SetAlwaysOnRequest {
+ optional string repl_id = 1;
+ optional bool always_on = 2;
+}
+
+message SetAlwaysOnResponse {
+}
+
+message SetReplMetadataTimeRequest {
+ optional string repl_id = 1;
+ optional google.protobuf.Timestamp time = 2;
+}
+
+message SetReplMetadataTimeResponse {
+}
+
+message UpdateReplBackoffRequest {
+ optional string repl_id = 1;
+ optional ReplBackoff original_backoff = 3;
+ optional ReplBackoff backoff = 2;
+}
+
+message UpdateReplBackoffResponse {
+}
+
+message CleanupReplMetadataRequest {
+ optional string repl_id = 1;
+}
+
+message CleanupReplMetadataResponse {
+}
+
+message SetLastInteractiveTimeRequest {
+ optional string repl_id = 1;
+ optional google.protobuf.Timestamp time = 2;
+}
+
+message SetLastInteractiveTimeResponse {
+}
+
+message KillReplRequest {
+ optional string repl_id = 1;
+}
+
+message KillReplResponse {
+}
+
+message PlaceReplRequest {
+ optional Repl repl = 1;
+ optional bool ephemeral = 2;
+ optional bool restrict_network = 3;
+ optional bool hosting = 4;
+ optional bool enable_zonal_affinity = 5;
+ repeated features.Feature features = 6;
+ optional repl.Metadata metadata = 7;
+ optional bool enforce_concurrent_repl_limits = 8;
+}
+
+message PlaceReplResponse {
+ optional ReplContainer container = 2;
+ optional VMInstance vm_instance = 3;
+ optional bool was_limited = 4;
+}
+
+message TryAcquireReplRequest {
+ optional Repl repl = 1;
+ optional ReplContainer container = 2;
+ optional bool ephemeral = 3;
+ optional bool restrict_network = 4;
+ optional bool prevent_wakeup = 5;
+ optional repl.Metadata metadata = 6;
+}
+
+message TryAcquireReplResponse {
+ optional ReplContainer container = 1;
+}
+
+message VMInstanceStatus {
+ optional float cpu_utilization = 1;
+ optional int32 container_count = 2;
+ optional PlacementResources available_resources = 3;
+}
+
+message HeartbeatRequest {
+ optional string instance_id = 1;
+ optional VMInstanceStatus vm_instance_status = 4;
+}
+
+message HeartbeatResponse {
+}
+
+message RecoverFromMissedHeartbeatsRequest {
+ optional string instance_id = 1;
+ repeated string repl_ids = 2;
+}
+
+message RecoverFromMissedHeartbeatsResponse {
+ repeated string owned_repl_ids = 1;
+ repeated string stolen_repl_ids = 2;
+}
+
+message SetResourceLimitsRequest {
+ optional ResourceLimits resource_limits = 1;
+ optional string user = 2;
+ optional string repl_id = 3;
+}
+
+message SetResourceLimitsResponse {
+}
+
+message GetUserAndReplResourceLimitsRequest {
+ optional string repl_id = 1;
+ optional string user = 2;
+}
+
+message GetUserAndReplResourceLimitsResponse {
+ optional ResourceLimits user_limits = 1;
+ optional ResourceLimits repl_limits = 2;
+}
+
+message UpdateReplStateRequest {
+ optional Repl repl = 1;
+ optional ReplState state = 2;
+ optional bool should_limit = 3;
+ optional uint32 limit_num = 4;
+}
+
+message UpdateReplStateResponse {
+ optional bool was_limited = 1;
+}
+
+message RecordUserNetworkEgressRequest {
+ optional string user = 1;
+ optional EgressTimeWindow window = 2;
+ optional google.protobuf.Timestamp as_of = 3;
+ optional int64 egress_bytes = 4;
+ optional uint64 egress_bytes_unsigned = 5;
+}
+
+message RecordUserNetworkEgressResponse {
+}
+
+message GetUserNetworkEgressRequest {
+ optional string user = 1;
+ optional EgressTimeWindow window = 2;
+ optional google.protobuf.Timestamp as_of = 3;
+}
+
+message GetUserNetworkEgressResponse {
+ optional int64 egress_bytes = 4;
+ optional uint64 egress_bytes_unsigned = 5;
+}
+
+message RecordUserCPUTimeRequest {
+ optional string user = 1;
+ optional CPUTimeWindow window = 2;
+ optional google.protobuf.Timestamp as_of = 3;
+ optional google.protobuf.Duration cpu_time = 4;
+}
+
+message RecordUserCPUTimeResponse {
+}
+
+message GetUserCPUTimeRequest {
+ optional string user = 1;
+ optional CPUTimeWindow window = 2;
+ optional google.protobuf.Timestamp as_of = 3;
+}
+
+message GetUserCPUTimeResponse {
+ optional google.protobuf.Duration cpu_time = 1;
+}
+
+message PushBanRuleRequest {
+ message BanRule {
+  optional uint32 opts = 1;
+  optional string user = 2;
+  optional string slug = 3;
+  optional string path = 4;
+ }
+
+ optional BanRule ban_rule = 1;
+}
+
+message PushBanRuleResponse {
+}
+
+message BanHostRequest {
+ optional string host = 1;
+ optional google.protobuf.Timestamp until = 2;
+}
+
+message BanHostResponse {
+}
+
+message CheckBannedHostMatchRequest {
+ optional string host = 1;
+}
+
+message CheckBannedHostMatchResponse {
+ optional bool match = 1;
+}
+
+message CheckBanMatchRequest {
+ optional string user = 1;
+ optional string slug = 2;
+ optional string path = 3;
+}
+
+message CheckBanMatchResponse {
+ optional bool match = 1;
+}
+
+message MarkReplNoShedRequest {
+ optional string repl_id = 1;
+ optional google.protobuf.Duration duration = 2;
+}
+
+message MarkReplNoShedResponse {
+}
+
+message GetReplNoShedRequest {
+ optional string repl_id = 1;
+}
+
+message GetReplNoShedResponse {
+ optional bool no_shed = 1;
+}
+
+message AbusePattern {
+ optional string pattern = 1;
+ optional AbuseAction action = 2;
+}
+
+message SetAbusePatternsRequest {
+ message PatternsEntry {
+  optional string key = 1;
+  optional AbusePattern value = 2;
+ }
+
+ repeated PatternsEntry patterns = 1;
+}
+
+message SetAbusePatternsResponse {
+}
+
+message GetAbusePatternsRequest {
+}
+
+message GetAbusePatternsResponse {
+ message PatternsEntry {
+  optional string key = 1;
+  optional AbusePattern value = 2;
+ }
+
+ repeated PatternsEntry patterns = 1;
+}
+
+message GetRawBansRequest {
+}
+
+message GetRawBansResponse {
+ repeated string rules = 1;
+ repeated string hosts = 2;
+}
+
+message SetHTTP01ChallengeRequest {
+ optional string token = 1;
+ optional string keyAuth = 2;
+ optional string domain = 3;
+}
+
+message SetHTTP01ChallengeResponse {
+}
+
+message GetHTTP01ChallengeRequest {
+ optional string token = 1;
+ optional string domain = 2;
+}
+
+message GetHTTP01ChallengeResponse {
+ optional string keyAuth = 1;
+}
+
+message DisableInteractiveBoostRequest {
+ optional string repl_id = 1;
+ optional uint32 user_id = 2;
+ optional string user_name = 3;
+}
+
+message DisableInteractiveBoostResponse {
+}
+

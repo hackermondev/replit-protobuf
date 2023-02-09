@@ -1,0 +1,6 @@
+package replit.goval.api;
+
+message NixStoreRealiseRequest {
+ optional string storePath = 1;
+}
+

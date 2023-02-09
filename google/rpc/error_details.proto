@@ -1,0 +1,78 @@
+package google.rpc;
+
+import "google/protobuf/duration.proto";
+
+message RetryInfo {
+ optional protobuf.Duration retry_delay = 1;
+}
+
+message DebugInfo {
+ repeated string stack_entries = 1;
+ optional string detail = 2;
+}
+
+message QuotaFailure {
+ message Violation {
+  optional string subject = 1;
+  optional string description = 2;
+ }
+
+ repeated Violation violations = 1;
+}
+
+message ErrorInfo {
+ message MetadataEntry {
+  optional string key = 1;
+  optional string value = 2;
+ }
+
+ optional string reason = 1;
+ optional string domain = 2;
+ repeated MetadataEntry metadata = 3;
+}
+
+message PreconditionFailure {
+ message Violation {
+  optional string type = 1;
+  optional string subject = 2;
+  optional string description = 3;
+ }
+
+ repeated Violation violations = 1;
+}
+
+message BadRequest {
+ message FieldViolation {
+  optional string field = 1;
+  optional string description = 2;
+ }
+
+ repeated FieldViolation field_violations = 1;
+}
+
+message RequestInfo {
+ optional string request_id = 1;
+ optional string serving_data = 2;
+}
+
+message ResourceInfo {
+ optional string resource_type = 1;
+ optional string resource_name = 2;
+ optional string owner = 3;
+ optional string description = 4;
+}
+
+message Help {
+ message Link {
+  optional string description = 1;
+  optional string url = 2;
+ }
+
+ repeated Link links = 1;
+}
+
+message LocalizedMessage {
+ optional string locale = 1;
+ optional string message = 2;
+}
+

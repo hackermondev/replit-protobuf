@@ -1,0 +1,46 @@
+package replit.goval.api.controlplane;
+
+import "api/features/features.proto";
+
+message VMInstance {
+
+ enum State {
+  LIVE = 0;
+  READY = 1;
+  LAMEDUCK = 2;
+  PREEMPTED = 3;
+  TERMINATED = 4;
+ }
+ optional string instance = 1;
+ optional string name = 2;
+ optional string hostname = 3;
+ optional string internal_ip = 4;
+ optional string external_ip = 5;
+ optional string zone = 6;
+ optional PlacementSpecifications placement_specifications = 9;
+ optional State state = 7;
+ optional uint32 conman_port = 8;
+}
+
+message PlacementResources {
+ optional int64 mcpus = 1;
+ optional int64 memory_bytes = 2;
+ optional int32 gpus = 3;
+}
+
+message PlacementSpecifications {
+
+ enum Subcluster {
+  INTERACTIVE = 0;
+  HOSTING = 1;
+  BOOSTED_INTERACTIVE = 2;
+  BOOSTED_HOSTING = 3;
+ }
+ optional PlacementResources capacity = 1;
+ optional bool preemptible = 2;
+ optional string zone = 3;
+ optional string continent = 4;
+ optional Subcluster subcluster = 5;
+ repeated features.Feature features = 6;
+}
+

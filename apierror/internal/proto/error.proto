@@ -1,0 +1,16 @@
+package error;
+
+import "google/protobuf/any.proto";
+import "google/rpc/code.proto";
+
+message Error {
+ message Status {
+  optional int32 code = 1;
+  optional string message = 2;
+  optional google.rpc.Code status = 4;
+  repeated google.protobuf.Any details = 5;
+ }
+
+ optional Status error = 1;
+}
+

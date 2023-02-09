@@ -1,0 +1,23 @@
+package replit.goval.api.controlplane;
+
+import "google/protobuf/timestamp.proto";
+
+
+enum ReplStatus {
+ REPL_STOPPED = 0;
+ REPL_RUNNING = 1;
+ REPL_SERVING = 2;
+ REPL_LIMITED = 3;
+}
+message ReplStatusMessage {
+ optional ReplStatusUpdate repl_status_update = 1;
+}
+
+message ReplStatusUpdate {
+ optional google.protobuf.Timestamp timestamp = 1;
+ optional string repl_id = 2;
+ optional ReplStatus status = 3;
+ optional string user_name = 4;
+ optional string source_repl_id = 5;
+}
+

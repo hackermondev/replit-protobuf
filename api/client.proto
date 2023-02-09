@@ -1,0 +1,81 @@
+package replit.goval.api;
+
+import "google/protobuf/timestamp.proto";
+import "api/repl/repl.proto";
+import "api/features/features.proto";
+
+message ReplToken {
+ message ClassroomMetadata {
+  optional string id = 1;
+  optional string language = 2;
+ }
+
+ message ReplID {
+  optional string id = 1;
+  optional string sourceRepl = 2;
+ }
+
+ message Presenced {
+  optional uint32 bearerID = 1;
+  optional string bearerName = 2;
+ }
+
+
+ enum WireFormat {
+  PROTOBUF = 0;
+  JSON = 1;
+ }
+ optional google.protobuf.Timestamp iat = 1;
+ optional google.protobuf.Timestamp exp = 2;
+ optional string salt = 3;
+ optional string cluster = 4;
+ optional repl.Persistence persistence = 6;
+ optional repl.Repl repl = 7;
+ optional ReplID id = 8;
+ optional ClassroomMetadata classroom = 9;
+ optional repl.ResourceLimits resourceLimits = 10;
+ optional repl.ResourceLimits interactiveResourceLimits = 17;
+ optional WireFormat format = 12;
+ optional Presenced presenced = 13;
+ repeated string flags = 14;
+ optional repl.Permissions permissions = 15;
+ repeated features.Feature features = 16;
+}
+
+message TLSCertificate {
+ optional string domain = 1;
+ optional bytes cert = 2;
+}
+
+message ReplTransfer {
+ optional repl.Repl repl = 1;
+ optional repl.ResourceLimits replLimits = 2;
+ optional repl.ResourceLimits userLimits = 3;
+ repeated string customDomains = 4;
+ repeated TLSCertificate certificates = 5;
+ repeated string flags = 6;
+}
+
+message AllowReplRequest {
+ optional ReplTransfer replTransfer = 1;
+}
+
+message ClusterMetadata {
+ optional string id = 1;
+ optional string conmanURL = 2;
+ optional string gurl = 3;
+ optional string proxy = 5;
+ optional string continent = 7;
+}
+
+message EvictReplRequest {
+ optional ClusterMetadata clusterMetadata = 1;
+ optional string token = 2;
+ optional string user = 3;
+ optional string slug = 4;
+}
+
+message EvictReplResponse {
+ optional ReplTransfer replTransfer = 1;
+}
+

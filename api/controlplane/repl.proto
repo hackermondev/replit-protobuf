@@ -1,0 +1,80 @@
+package replit.goval.api.controlplane;
+
+import "google/protobuf/timestamp.proto";
+import "api/repl/repl.proto";
+
+
+enum ReplState {
+ STOPPED = 0;
+ BOOTING = 1;
+ RUNNING = 2;
+}
+message Repl {
+ optional string id = 1;
+ optional string language = 2;
+ optional string slug = 3;
+ optional string user = 4;
+ optional string bucket = 5;
+ optional string sourceRepl = 6;
+ repeated string flags = 7;
+ optional string database = 8;
+ optional repl.Buckets buckets = 9;
+}
+
+message ResourceLimits {
+ optional bool network = 1;
+ optional int64 memory = 2;
+ optional double threads = 3;
+ optional double shares = 4;
+ optional int64 disk = 5;
+}
+
+message ReplContainer {
+ optional string container = 1;
+ optional string instance = 2;
+ optional string zone = 3;
+ optional int64 generation = 4;
+ optional string instance_ip = 5;
+}
+
+message ReplServer {
+ optional string url = 1;
+}
+
+message ClusterMetadata {
+ optional string id = 1;
+ optional string conman_url = 2;
+ optional string gurl = 3;
+ optional string proxy = 4;
+}
+
+message ContainerServer {
+ optional uint32 conman_port = 1;
+ optional uint32 external_port = 2;
+}
+
+message ReplBackoff {
+ optional google.protobuf.Timestamp next_allowed_wakeup = 1;
+ optional uint32 retry_count = 2;
+}
+
+message ReplInfo {
+ optional string repl_id = 13;
+ optional Repl repl = 1;
+ optional repl.Metadata metadata = 17;
+ optional ReplServer server = 2;
+ optional ReplContainer container = 3;
+ optional ClusterMetadata tombstone = 4;
+ repeated string domains = 5;
+ optional google.protobuf.Timestamp last_metadata = 6;
+ optional google.protobuf.Timestamp last_interactive = 7;
+ optional google.protobuf.Timestamp last_server = 8;
+ optional bool ephemeral = 9;
+ optional bool always_on = 12;
+ optional ReplBackoff backoff = 10;
+ optional ReplState state = 11;
+ optional bool restrict_network = 14;
+ optional bool prevent_wakeup = 16;
+ repeated ContainerServer servers = 15;
+}
+
